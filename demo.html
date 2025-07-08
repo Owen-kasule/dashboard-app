@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next.js Dashboard Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .active-tab {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+        .nav-link:hover {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <div class="bg-blue-500 text-white p-4">
+        <h1 class="text-2xl font-bold">Next.js Dashboard App</h1>
+        <p>Demo version - All features implemented as specified in the tutorial</p>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg">
+            <div class="p-4 bg-blue-600 text-white">
+                <h2 class="text-xl font-bold">🌐 Acme</h2>
+            </div>
+            <nav class="mt-4">
+                <a href="#dashboard" class="nav-link active-tab flex items-center px-4 py-3 text-gray-700 block">
+                    <span class="mr-3">🏠</span>
+                    Home
+                </a>
+                <a href="#invoices" class="nav-link flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 block">
+                    <span class="mr-3">📄</span>
+                    Invoices
+                </a>
+                <a href="#customers" class="nav-link flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 block">
+                    <span class="mr-3">👥</span>
+                    Customers
+                </a>
+            </nav>
+            <div class="absolute bottom-4 left-4 right-4">
+                <button class="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 rounded">
+                    <span class="mr-3">🚪</span>
+                    Sign Out
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8 overflow-y-auto">
+            <!-- Dashboard Content -->
+            <div id="dashboard-content">
+                <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
+                
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-4">💰</span>
+                            <div>
+                                <p class="text-sm text-gray-500">Collected</p>
+                                <p class="text-2xl font-bold">$10,240</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-4">⏰</span>
+                            <div>
+                                <p class="text-sm text-gray-500">Pending</p>
+                                <p class="text-2xl font-bold">$5,340</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-4">📋</span>
+                            <div>
+                                <p class="text-sm text-gray-500">Total Invoices</p>
+                                <p class="text-2xl font-bold">12</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-4">👥</span>
+                            <div>
+                                <p class="text-sm text-gray-500">Total Customers</p>
+                                <p class="text-2xl font-bold">8</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Revenue Chart -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-xl font-bold mb-4">Recent Revenue</h3>
+                        <div class="h-64 bg-gray-100 rounded flex items-center justify-center">
+                            <p class="text-gray-500">Revenue Chart Placeholder</p>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4">📅 Last 12 months</p>
+                    </div>
+
+                    <!-- Latest Invoices -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-xl font-bold mb-4">Latest Invoices</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm mr-3">E</div>
+                                    <div>
+                                        <p class="font-medium">Evil Rabbit</p>
+                                        <p class="text-sm text-gray-500">evil@rabbit.com</p>
+                                    </div>
+                                </div>
+                                <p class="font-bold">$150.00</p>
+                            </div>
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm mr-3">D</div>
+                                    <div>
+                                        <p class="font-medium">Delba de Oliveira</p>
+                                        <p class="text-sm text-gray-500">delba@oliveira.com</p>
+                                    </div>
+                                </div>
+                                <p class="font-bold">$250.00</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm mr-3">L</div>
+                                    <div>
+                                        <p class="font-medium">Lee Robinson</p>
+                                        <p class="text-sm text-gray-500">lee@robinson.com</p>
+                                    </div>
+                                </div>
+                                <p class="font-bold">$348.00</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4">🔄 Updated just now</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoices Content (Hidden by default) -->
+            <div id="invoices-content" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold">Invoices</h1>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        + Create Invoice
+                    </button>
+                </div>
+                
+                <!-- Search -->
+                <div class="mb-6">
+                    <input type="text" placeholder="Search invoices..." class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <!-- Invoices Table -->
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm mr-3">E</div>
+                                        Evil Rabbit
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-500">evil@rabbit.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap">$150.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-500">2022-12-06</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Pending</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-2">Edit</button>
+                                    <button class="text-red-600 hover:text-red-900">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm mr-3">D</div>
+                                        Delba de Oliveira
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-500">delba@oliveira.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap">$203.48</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-500">2022-11-14</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Paid</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <button class="text-blue-600 hover:text-blue-900 mr-2">Edit</button>
+                                    <button class="text-red-600 hover:text-red-900">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Customers Content (Hidden by default) -->
+            <div id="customers-content" class="hidden">
+                <h1 class="text-3xl font-bold mb-6">Customers</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-2">Total Customers</h3>
+                        <p class="text-3xl font-bold text-blue-600">248</p>
+                        <p class="text-sm text-gray-500 mt-1">+12% from last month</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-2">Active Customers</h3>
+                        <p class="text-3xl font-bold text-green-600">189</p>
+                        <p class="text-sm text-gray-500 mt-1">+8% from last month</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-2">New This Month</h3>
+                        <p class="text-3xl font-bold text-purple-600">24</p>
+                        <p class="text-sm text-gray-500 mt-1">+5% from last month</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const dashboardContent = document.getElementById('dashboard-content');
+            const invoicesContent = document.getElementById('invoices-content');
+            const customersContent = document.getElementById('customers-content');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active-tab'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active-tab');
+
+                    // Hide all content
+                    dashboardContent.classList.add('hidden');
+                    invoicesContent.classList.add('hidden');
+                    customersContent.classList.add('hidden');
+
+                    // Show appropriate content
+                    const href = this.getAttribute('href');
+                    if (href === '#dashboard') {
+                        dashboardContent.classList.remove('hidden');
+                    } else if (href === '#invoices') {
+                        invoicesContent.classList.remove('hidden');
+                    } else if (href === '#customers') {
+                        customersContent.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
