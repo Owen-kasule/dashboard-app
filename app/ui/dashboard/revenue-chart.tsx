@@ -1,6 +1,6 @@
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
-import { generateYAxis } from '@/app/lib/data';
+import { generateYAxis } from '@/app/lib/utils';
 
 // This component receives data as a prop
 export default async function RevenueChart({

@@ -1,47 +1,6 @@
 import { lusitana } from '@/app/ui/fonts';
-
-const invoices = [
-  {
-    id: '1',
-    customer_name: 'Evil Rabbit',
-    customer_email: 'evil@rabbit.com',
-    amount: 15000,
-    date: '2022-12-06',
-    status: 'pending',
-  },
-  {
-    id: '2',
-    customer_name: 'Delba de Oliveira',
-    customer_email: 'delba@oliveira.com',
-    amount: 20348,
-    date: '2022-11-14',
-    status: 'pending',
-  },
-  {
-    id: '3',
-    customer_name: 'Lee Robinson',
-    customer_email: 'lee@robinson.com',
-    amount: 3040,
-    date: '2022-10-29',
-    status: 'paid',
-  },
-  {
-    id: '4',
-    customer_name: 'Michael Novotny',
-    customer_email: 'michael@novotny.com',
-    amount: 44800,
-    date: '2023-09-10',
-    status: 'paid',
-  },
-  {
-    id: '5',
-    customer_name: 'Amy Burns',
-    customer_email: 'amy@burns.com',
-    amount: 34577,
-    date: '2023-08-05',
-    status: 'pending',
-  },
-];
+import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
+import { fetchFilteredInvoices } from '@/app/lib/data';
 
 export default async function InvoicesTable({
   query,
@@ -50,12 +9,14 @@ export default async function InvoicesTable({
   query: string;
   currentPage: number;
 }) {
+  const invoices = await fetchFilteredInvoices(query, currentPage);
+
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {invoices?.map((invoice) => (
+            {invoices?.map((invoice: any) => (
               <div
                 key={invoice.id}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -64,30 +25,36 @@ export default async function InvoicesTable({
                   <div>
                     <div className="mb-2 flex items-center">
                       <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                        <span className="text-xs font-medium">{invoice.customer_name.charAt(0)}</span>
+                        <span className="text-xs font-medium">{invoice.name.charAt(0)}</span>
                       </div>
-                      <p>{invoice.customer_name}</p>
+                      <p>{invoice.name}</p>
                     </div>
-                    <p className="text-sm text-gray-500">{invoice.customer_email}</p>
+                    <p className="text-sm text-gray-500">{invoice.email}</p>
                   </div>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-1 text-xs ${
+                      invoice.status === 'pending'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-green-100 text-green-800'
+                    }`}
+                  >
+                    {invoice.status}
+                  </span>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      ${(invoice.amount / 100).toFixed(2)}
+                      {formatCurrency(invoice.amount)}
                     </p>
-                    <p>{invoice.date}</p>
+                    <p>{formatDateToLocal(invoice.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <span
-                      className={`inline-flex items-center rounded-full px-2 py-1 text-xs ${
-                        invoice.status === 'pending'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-green-100 text-green-800'
-                      }`}
-                    >
-                      {invoice.status}
-                    </span>
+                    <button className="rounded-md border p-2 hover:bg-gray-100">
+                      Edit
+                    </button>
+                    <button className="rounded-md border p-2 hover:bg-gray-100">
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
@@ -117,7 +84,7 @@ export default async function InvoicesTable({
               </tr>
             </thead>
             <tbody className="bg-white">
-              {invoices?.map((invoice) => (
+              {invoices?.map((invoice: any) => (
                 <tr
                   key={invoice.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
@@ -125,19 +92,19 @@ export default async function InvoicesTable({
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
                       <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-xs font-medium">{invoice.customer_name.charAt(0)}</span>
+                        <span className="text-xs font-medium">{invoice.name.charAt(0)}</span>
                       </div>
-                      <p>{invoice.customer_name}</p>
+                      <p>{invoice.name}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.customer_email}
+                    {invoice.email}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    ${(invoice.amount / 100).toFixed(2)}
+                    {formatCurrency(invoice.amount)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.date}
+                    {formatDateToLocal(invoice.date)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <span
