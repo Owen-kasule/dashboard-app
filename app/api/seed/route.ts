@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import postgres from 'postgres';
-import bcrypt from 'bcryptjs';
 import { users, customers, invoices, revenue } from '../../lib/placeholder-data';
 
 async function seedDatabase() {
+  // Check if we have the required environment variables
+  if (!process.env.POSTGRES_URL_NON_POOLING) {
+    throw new Error('POSTGRES_URL_NON_POOLING environment variable is required');
+  }
+
   // Use the non-pooling connection for more stable connection
   const sql = postgres(process.env.POSTGRES_URL_NON_POOLING!, {
     ssl: 'require',
@@ -33,11 +37,10 @@ async function seedDatabase() {
 
     console.log('Inserting users...');
     for (const user of users) {
-      const hashedPassword = await bcrypt.hash(user.password, 12);
       await sql`
         INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
-        ON CONFLICT (id) DO UPDATE SET password = ${hashedPassword};
+        VALUES (${user.id}, ${user.name}, ${user.email}, ${user.password})
+        ON CONFLICT (id) DO UPDATE SET password = ${user.password};
       `;
     }
 
@@ -121,6 +124,14 @@ async function seedDatabase() {
 }
 
 export async function GET() {
+  // Prevent seeding in production builds
+  if (process.env.NODE_ENV === 'production' && !process.env.POSTGRES_URL_NON_POOLING) {
+    return NextResponse.json(
+      { error: 'Seeding not available in production without database configuration' },
+      { status: 403 }
+    );
+  }
+
   try {
     await seedDatabase();
 
