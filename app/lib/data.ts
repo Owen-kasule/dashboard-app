@@ -1,6 +1,7 @@
 import postgres from 'postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import { formatCurrency } from './utils';
+import { InvoiceForm, CustomerField } from './definitions';
 
 // Types
 export interface User {
@@ -215,11 +216,14 @@ export async function fetchInvoiceById(id: string) {
     `;
 
     const invoice = data.map((invoice) => ({
-      ...invoice,
+      id: invoice.id,
+      customer_id: invoice.customer_id,
       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
+      status: invoice.status,
     }));
 
+    console.log(invoice); // Invoice is an empty array [] if not found
     return invoice[0];
   } catch (error) {
     console.error('Database Error:', error);
@@ -227,7 +231,7 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
-export async function fetchCustomers() {
+export async function fetchCustomers(): Promise<CustomerField[]> {
   try {
     const data = await sql`
       SELECT
@@ -237,7 +241,10 @@ export async function fetchCustomers() {
       ORDER BY name ASC
     `;
 
-    const customers = data;
+    const customers = data.map((customer) => ({
+      id: customer.id,
+      name: customer.name,
+    }));
     return customers;
   } catch (error) {
     console.error('Database Error:', error);

@@ -1,6 +1,7 @@
 import { lusitana } from '@/app/ui/fonts';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredInvoices } from '@/app/lib/data';
+import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
 
 export default async function InvoicesTable({
   query,
@@ -49,12 +50,8 @@ export default async function InvoicesTable({
                     <p>{formatDateToLocal(invoice.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <button className="rounded-md border p-2 hover:bg-gray-100">
-                      Edit
-                    </button>
-                    <button className="rounded-md border p-2 hover:bg-gray-100">
-                      Delete
-                    </button>
+                    <UpdateInvoice id={invoice.id} />
+                    <DeleteInvoice id={invoice.id} />
                   </div>
                 </div>
               </div>
@@ -119,12 +116,8 @@ export default async function InvoicesTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <button className="rounded-md border p-2 hover:bg-gray-100">
-                        Edit
-                      </button>
-                      <button className="rounded-md border p-2 hover:bg-gray-100">
-                        Delete
-                      </button>
+                      <UpdateInvoice id={invoice.id} />
+                      <DeleteInvoice id={invoice.id} />
                     </div>
                   </td>
                 </tr>

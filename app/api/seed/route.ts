@@ -2,10 +2,6 @@ import { NextResponse } from 'next/server';
 import postgres from 'postgres';
 import { users, customers, invoices, revenue } from '../../lib/placeholder-data';
 
-import { NextResponse } from 'next/server';
-import postgres from 'postgres';
-import { users, customers, invoices, revenue } from '../../lib/placeholder-data';
-
 async function seedDatabase() {
   // Use the non-pooling connection for more stable connection
   const sql = postgres(process.env.POSTGRES_URL_NON_POOLING!, {
