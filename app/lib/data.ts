@@ -1,18 +1,68 @@
 import postgres from 'postgres';
+import { unstable_noStore as noStore } from 'next/cache';
 
-const sql = postgres(process.env.POSTGRES_URL!, { 
+// Types
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  image_url: string;
+}
+
+export interface Invoice {
+  id: string;
+  customer_id: string;
+  amount: number;
+  date: string;
+  status: 'pending' | 'paid';
+}
+
+export interface Revenue {
+  month: string;
+  revenue: number;
+}
+
+export interface LatestInvoiceRaw {
+  id: string;
+  name: string;
+  image_url: string;
+  email: string;
+  amount: number;
+}
+
+export interface LatestInvoice {
+  id: string;
+  name: string;
+  image_url: string;
+  email: string;
+  amount: string;
+}
+
+const sql = postgres(process.env.POSTGRES_URL_NON_POOLING!, { 
   ssl: 'require',
   prepare: false,
-  max: 1
+  max: 1,
+  idle_timeout: 20,
+  max_lifetime: 60 * 30,
 });
 
 export async function fetchRevenue() {
   try {
+    // We artificially delay a response for demo purposes.
+    // Don't do this in production :)
     console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql`SELECT * FROM revenue`;
 
-    console.log('Revenue data fetched successfully.');
+    console.log('Data fetch completed after 3 seconds.');
 
     return data.map((row: any) => ({
       month: row.month,
@@ -25,6 +75,15 @@ export async function fetchRevenue() {
 }
 
 export async function fetchLatestInvoices() {
+  // Add noStore() here to prevent the response from being cached.
+  // This is equivalent to in fetch(..., {cache: 'no-store'}).
+  noStore();
+  
+  // Add artificial delay to simulate slow data fetch
+  console.log('Fetching latest invoices...');
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  console.log('Latest invoices fetch completed after 2 seconds');
+
   try {
     const data = await sql`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
@@ -34,12 +93,10 @@ export async function fetchLatestInvoices() {
       LIMIT 5`;
 
     const latestInvoices = data.map((invoice: any) => ({
-      id: invoice.id,
-      name: invoice.name,
-      image_url: invoice.image_url,
-      email: invoice.email,
+      ...invoice,
       amount: formatCurrency(invoice.amount),
     }));
+    
     return latestInvoices;
   } catch (error) {
     console.error('Database Error:', error);
@@ -48,6 +105,11 @@ export async function fetchLatestInvoices() {
 }
 
 export async function fetchCardData() {
+  // Add artificial delay to simulate slow data fetch
+  console.log('Fetching card data...');
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  console.log('Card data fetch completed after 1 second');
+
   try {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate

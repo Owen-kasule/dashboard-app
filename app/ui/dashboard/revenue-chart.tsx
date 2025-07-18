@@ -28,18 +28,28 @@ export default async function RevenueChart({
             ))}
           </div>
 
-          {revenue.map((month, index) => (
-            <div key={`month-${month.month}-${index}`} className="flex flex-col items-center gap-2">
-              <div className="relative w-full h-80 flex items-end">
-                <div className="w-full rounded-md bg-blue-300 h-full opacity-50">
-                  <div className="text-xs p-1 text-gray-700">${month.revenue}</div>
+          {revenue.map((month, index) => {
+            // Convert to a percentage for height, ensuring minimum visibility
+            const barHeight = Math.max((month.revenue / topLabel) * 100, 5);
+            const heightClass = barHeight > 75 ? 'h-full' : 
+                               barHeight > 50 ? 'h-3/4' :
+                               barHeight > 25 ? 'h-1/2' : 'h-1/4';
+            
+            return (
+              <div key={`month-${month.month}-${index}`} className="flex flex-col items-center gap-2">
+                <div className="relative w-full h-80 flex items-end">
+                  <div className={`w-full rounded-md bg-blue-300 flex items-end justify-center ${heightClass}`}>
+                    <span className="text-xs text-white font-medium pb-1">
+                      ${(month.revenue / 1000).toFixed(0)}K
+                    </span>
+                  </div>
                 </div>
+                <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
+                  {month.month}
+                </p>
               </div>
-              <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
-                {month.month}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <div className="flex items-center pb-2 pt-6">
           <CalendarIcon className="h-5 w-5 text-gray-500" />
