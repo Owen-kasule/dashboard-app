@@ -5,6 +5,9 @@ import CardWrapper from '@/app/ui/dashboard/card-wrapper';
 import RevenueChartWrapper from '@/app/ui/dashboard/revenue-chart-wrapper';
 import LatestInvoicesWrapper from '@/app/ui/dashboard/latest-invoices-wrapper';
 
+// Prevent static generation for this page
+export const dynamic = 'force-dynamic';
+
 export default async function Page() {
   return (
     <main>
